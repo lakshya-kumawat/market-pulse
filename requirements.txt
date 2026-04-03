@@ -1,0 +1,12 @@
+apache-airflow==2.11.2
+pyspark==3.5.2
+yfinance
+dbt-bigquery
+great-expectations
+streamlit
+python-dotenv
+pyyaml
+google-cloud-storage
+google-cloud-bigquery
+pandas
+functools
