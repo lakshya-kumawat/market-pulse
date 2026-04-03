@@ -1,0 +1,8 @@
+# config/stocks.yaml
+
+stocks:
+  - RELIANCE.NS
+  - TCS.NS
+  - HDFCBANK.NS
+  - INFY.NS
+  - ICICIBANK.NS

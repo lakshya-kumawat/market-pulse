@@ -1,2 +1,40 @@
+# Environment
+.env
+
+# Data layers - never commit raw data
+data/
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
 .venv/
 venv/
+
+# Spark
+derby.log
+metastore_db/
+spark-warehouse/
+
+# Airflow
+airflow/logs/
+airflow/airflow.db
+airflow/*.cfg
+airflow/*.yaml
+
+# dbt
+dbt_project/target/
+dbt_project/dbt_packages/
+dbt_project/logs/
+
+# GCP - never commit credentials
+*.json
+service_account*.json
+application_default_credentials.json
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+.DS_Store
