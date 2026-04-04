@@ -22,7 +22,7 @@ def ingest_ohlcv_data(stocks_list, period, base_path, date):
         data["Date"] = data["Date"].dt.strftime("%Y-%m-%d")
         # find today's date from
         
-        dir_path = f"{base_path}/ohlcv/symbol={stocks.split('.')[0]}/date={date}"
+        dir_path = f"{base_path}/ohlcv/date={date}/symbol={stocks.split('.')[0]}"
         os.makedirs(dir_path, exist_ok=True)
         with open(f"{dir_path}/raw.json", "w") as f:
             json.dump(data.to_dict(orient='records'), f, indent=4)

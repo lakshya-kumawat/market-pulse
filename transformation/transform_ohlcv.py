@@ -12,7 +12,7 @@ def transform_ohlcv(stocks_list, bronze_path, silver_path, date):
     dfs = []
     for stock in stocks_list:
         symbol = stock.split('.')[0]
-        df = spark.read.schema(OHLCV_SCHEMA).option("multiLine", True).json(f"{bronze_path}/ohlcv/symbol={symbol}/date={date}/raw.json")
+        df = spark.read.schema(OHLCV_SCHEMA).option("multiLine", True).json(f"{bronze_path}/ohlcv/date={date}/symbol={symbol}/raw.json")
         df = clean_ohlcv(df, symbol)
         dfs.append(df)
 
