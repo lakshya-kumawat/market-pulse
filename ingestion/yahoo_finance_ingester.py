@@ -34,4 +34,4 @@ if __name__ == "__main__":
     BRONZE_PATH = os.getenv("BRONZE_PATH")
     with open("config/stocks.yaml", "r") as f:
         config = yaml.safe_load(f)
-    ingest_ohlcv_data(config["stocks"], "1mo", BRONZE_PATH, dt.today().strftime("%Y-%m-%d"))
+    ingest_ohlcv_data(config["stocks"], "max", BRONZE_PATH, dt.today().strftime("%Y-%m-%d"))

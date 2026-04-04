@@ -32,7 +32,7 @@ with DAG(
         python_callable=ingest_ohlcv_data,
         op_kwargs={
             "stocks_list": stocks_list,
-            "period": "1mo",
+            "period": "max",
             "base_path": BRONZE_PATH,
             "date": "{{ ds }}"
         }
@@ -66,7 +66,8 @@ with DAG(
         op_kwargs={
             "local_path": SILVER_PATH,
             "bucket_name": BUCKET_NAME,
-            "gcs_prefix": "silver"
+            "gcs_prefix": "silver",
+            "overwrite": True,
         }
     )
     

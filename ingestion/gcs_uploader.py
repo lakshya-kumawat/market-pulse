@@ -9,9 +9,14 @@ logging.basicConfig(
     format="%(asctime)s - %(levelname)s - %(message)s"
 )
 
-def upload_to_gcs(local_path, bucket_name, gcs_prefix, date = None):
+def upload_to_gcs(local_path, bucket_name, gcs_prefix, date = None, overwrite=False):
     client = storage.Client()
     bucket = client.bucket(bucket_name)
+    if overwrite:
+        blobs = bucket.list_blobs(prefix=gcs_prefix)
+        for blob in blobs:
+            blob.delete()
+            logger.info(f"Deleted existing blob: {blob.name}")
     for root, dirs, files in os.walk(local_path):
         if date and date not in root:
             continue
@@ -29,5 +34,6 @@ if __name__ == "__main__":
     upload_to_gcs(
         local_path=os.getenv("SILVER_PATH"),
         bucket_name=os.getenv("BUCKET_NAME"),
-        gcs_prefix="silver"
+        gcs_prefix="silver",
+        overwrite=True
     )
