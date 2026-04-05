@@ -23,9 +23,7 @@ airflow/*.cfg
 airflow/*.yaml
 
 # dbt
-dbt_project/target/
-dbt_project/dbt_packages/
-dbt_project/logs/
+logs/
 
 # GCP - never commit credentials
 *.json
