@@ -1,0 +1,26 @@
+version: 2
+
+sources:
+  - name: silver
+    database: market-pulse-491904
+    description: "Silver layer for market pulse models"
+    schema: market_pulse_silver
+
+    tables:
+      - name: ohlcv
+        description: "External table from GCS parquet files"
+        columns:
+          - name: Date
+            description: "Date of the OHLCV data"
+          - name: Open
+            description: "Opening price of stock"
+          - name: High
+            description: "Highest price of stock"
+          - name: Low
+            description: "Lowest price of stock"
+          - name: Close
+            description: "Closing price of stock"
+          - name: Volume
+            description: "Trading volume of stock"
+          - name: Symbol
+            description: "Symbol of Stock, e.g. 'HDFC', 'RELIANCE'"
