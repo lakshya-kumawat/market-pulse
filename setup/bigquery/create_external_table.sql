@@ -4,7 +4,7 @@ CREATE EXTERNAL TABLE `market-pulse-491904.market_pulse_silver.ohlcv`
     )
     OPTIONS (
         format = 'PARQUET',
-        uris = ['gs://market-pulse-datalake/silver/ohlcv/Symbol=*/*.parquet'],
+        uris = ['gs://market-pulse-datalake/silver/ohlcv/*'],
         hive_partition_uri_prefix = 'gs://market-pulse-datalake/silver/ohlcv/',
         require_hive_partition_filter = false
 );
