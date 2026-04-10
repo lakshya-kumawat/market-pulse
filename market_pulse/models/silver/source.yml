@@ -5,22 +5,67 @@ sources:
     database: market-pulse-491904
     description: "Silver layer for market pulse models"
     schema: market_pulse_silver
-
     tables:
       - name: ohlcv
         description: "External table from GCS parquet files"
+        tests:
+          - dbt_utils.unique_combination_of_columns:
+              combination_of_columns: ["Date", "Symbol"]
+          - dbt_utils.expression_is_true:
+              name: high_greater_than_low
+              expression: "High >= Low"
+          - dbt_utils.expression_is_true:
+              name: high_greater_than_open
+              expression: "High >= Open"
+          - dbt_utils.expression_is_true:
+              name: high_greater_than_close
+              expression: "High >= Close"
+          - dbt_utils.expression_is_true:
+              name: low_less_than_open  
+              expression: "Low <= Open"
+          - dbt_utils.expression_is_true:
+              name: low_less_than_close
+              expression: "Low <= Close"  
         columns:
           - name: Date
             description: "Date of the OHLCV data"
+            tests:
+              - not_null
           - name: Open
             description: "Opening price of stock"
+            tests:
+              - not_null
+              - dbt_utils.accepted_range:
+                  min_value: 0
+                  inclusive: false
           - name: High
             description: "Highest price of stock"
+            tests:
+              - not_null
+              - dbt_utils.accepted_range:
+                  min_value: 0
+                  inclusive: false
           - name: Low
             description: "Lowest price of stock"
+            tests:
+              - not_null
+              - dbt_utils.accepted_range:
+                  min_value: 0
+                  inclusive: false
           - name: Close
             description: "Closing price of stock"
+            tests:
+              - not_null
+              - dbt_utils.accepted_range:
+                  min_value: 0
+                  inclusive: false
           - name: Volume
             description: "Trading volume of stock"
+            tests:
+              - not_null
+              - dbt_utils.accepted_range:
+                  min_value: 0
           - name: Symbol
             description: "Symbol of Stock, e.g. 'HDFC', 'RELIANCE'"
+            tests:
+              - not_null
