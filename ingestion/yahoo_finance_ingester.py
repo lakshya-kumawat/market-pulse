@@ -15,12 +15,11 @@ logging.basicConfig(
 def ingest_ohlcv_data(stocks_list, period, base_path, date):
     for stocks in stocks_list:
         stock_data = yf.Ticker(stocks)
-        data =  stock_data.history(period = period)
+        data =  stock_data.history(start="2000-01-01", period = period)
 
         data = data.reset_index()
 
         data["Date"] = data["Date"].dt.strftime("%Y-%m-%d")
-        # find today's date from
         
         dir_path = f"{base_path}/ohlcv/date={date}/symbol={stocks.split('.')[0]}"
         os.makedirs(dir_path, exist_ok=True)
