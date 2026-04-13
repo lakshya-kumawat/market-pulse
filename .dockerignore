@@ -1,0 +1,16 @@
+data/
+ingestion/
+logs/
+market_pulse/
+orchestration/
+setup/
+transformation/
+venv/
+.env
+.Makefile
+README.md
+__pycache__/
+*.pyc
+*.pyo
+dashboard/__pycache__/
+requirements.txt

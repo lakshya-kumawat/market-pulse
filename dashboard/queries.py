@@ -2,9 +2,9 @@ from google.cloud import bigquery
 from datetime import datetime
 from dateutil.relativedelta import relativedelta
 
-def run_query(query):
-    client = bigquery.Client()
-    result = client.query_and_wait(query)
+def run_query(query, job_config=None):
+    client = bigquery.Client(project="market-pulse-491904")
+    result = client.query_and_wait(query, job_config=job_config)
     df = result.to_dataframe()
     return df
 
@@ -32,18 +32,23 @@ def get_date_range(period):
 
 
 def get_ohlcv_summary(symbol):
-    query = f"SELECT * FROM `market-pulse-491904.market_pulse_gold.ohlcv_summary` WHERE Symbol = '{symbol}'"
-    df = run_query(query)
+    job_config = bigquery.QueryJobConfig(
+        query_parameters=[
+            bigquery.ScalarQueryParameter("symbol", "STRING", symbol)
+        ]
+    )
+    query = f"SELECT * FROM `market-pulse-491904.market_pulse_gold.ohlcv_summary` WHERE Symbol = @symbol"
+    df = run_query(query, job_config)
     return df
 
 def get_moving_averages(symbol, period):
     start_date = get_date_range(period)
-    
-    query = f"SELECT * from `market-pulse-491904.market_pulse_gold.moving_average` WHERE Symbol = '{symbol}' AND Date >= '{start_date}'"
-    df = run_query(query)
-    return df
-
-def get_daily_returns(symbol):
-    query = f"SELECT * from `market-pulse-491904.market_pulse_gold.daily_returns` WHERE Symbol = '{symbol}' ORDER BY Date DESC LIMIT 1"
-    df = run_query(query)
+    job_config = bigquery.QueryJobConfig(
+        query_parameters=[
+            bigquery.ScalarQueryParameter("symbol", "STRING", symbol),
+            bigquery.ScalarQueryParameter("start_date", "STRING", start_date)
+        ]
+    )
+    query = f"SELECT * from `market-pulse-491904.market_pulse_gold.moving_average` WHERE Symbol = @symbol AND Date >= @start_date ORDER BY Date"
+    df = run_query(query, job_config)
     return df
