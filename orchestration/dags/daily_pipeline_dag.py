@@ -1,16 +1,18 @@
 import sys
-sys.path.insert(0, "/home/lakshya/stock-analytics-platform")
 import os
+from dotenv import load_dotenv
+load_dotenv()
+sys.path.insert(0, os.getenv("PROJECT_ROOT"))
 import yaml
 from airflow import DAG
 from airflow.operators.python import PythonOperator
 from datetime import datetime
-from dotenv import load_dotenv
 from ingestion.yahoo_finance_ingester import ingest_ohlcv_data
 from ingestion.gcs_uploader import upload_to_gcs
 from transformation.transform_ohlcv import transform_ohlcv
+from airflow.operators.bash import BashOperator
 
-load_dotenv()
+
 BRONZE_PATH = os.getenv("BRONZE_PATH")
 SILVER_PATH = os.getenv("SILVER_PATH")
 BUCKET_NAME = os.getenv("BUCKET_NAME")
@@ -71,7 +73,11 @@ with DAG(
         }
     )
     
+    dbt_task = BashOperator(
+        task_id="run_dbt_models",
+        bash_command="cd " + os.getenv("PROJECT_ROOT") + "/market_pulse && dbt run"
+    )
     
     
     
-    ingest_task >> upload_bronze_task >> transform_task >> upload_silver_task
+    ingest_task >> upload_bronze_task >> transform_task >> upload_silver_task >> dbt_task
